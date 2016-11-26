@@ -12,3 +12,8 @@
     ```
         Get-childitem | sort -property LastWriteTime | %{ cp $_.Name c:\temp;  start-sleep -s 1 }
     ```
+4. Replace by regex in files
+    ```
+        ls -File | %{ $file = $_; $content = gc $file; $content -replace '(?<test>DASH)','$1 $1' | sc $file }
+    ```
+    
