@@ -26,10 +26,17 @@ $computedSizes = (Get-ChildItem C:\Users\marcin\Desktop -Directory) | %{ get-Siz
 
 $max = $computedSizes  | Sort -Property Size | Select-Object -Last 1 -ExpandProperty Size
 $min = $computedSizes | Select-Object -First 1 -ExpandProperty Size
+$sum = $computedSizes | Measure-Object -Property Size -sum |Select-Object -First 1 -ExpandProperty Sum
 
-$computedSizes | ft -autosize -property Fullpath,Name,Size,@{Name='Percent';expression={
+$computedSizes | ft -autosize -property Fullpath,Name,Size,
+@{Name='RelativeToBiggest';expression={
 [int]$repetition = (($_.Size / ($max)) * 100 / 3)
 [string]$g=[char]9608
 $g * $repetition
-}} 
+}},
+@{Name='Percentage';expression={
+[int]$repetition = (($_.Size / ($sum)) * 100 / 3)
+[string]$g=[char]9608
+$g * $repetition
+}}
 
